@@ -1,0 +1,47 @@
+# G30L0 - Kotlin version
+
+This is the kotlin converted source code of g30l0, an abas Essentials App build on the abas Essentials SDK.
+
+## General setup
+If you are using proxies, add a gradle.properties file to your $GRADLE_USER_HOME.
+
+```
+#If you use a proxy add it here
+systemProp.http.proxyHost=<webproxy>
+systemProp.http.proxyPort=<port>
+systemProp.https.proxyHost=<webproxy>
+systemProp.https.proxyPort=<port>
+```
+
+Run `./initGradleProperties.sh` in your terminal (use Git Bash on Windows)
+
+Use your favorite IDE to import the project.
+
+## Installation
+To install the project make sure you are running the docker-compose.yml file 
+or else change the gradle.properties file accordingly to use another erp client 
+(you will still need a nexus server, but it can of course also be installed in your erp installation 
+or elsewhere as long as it is configured in the gradle.properties file).
+
+To use the project's docker-compose.yml file, in the project's root directory run:
+```shell
+docker login --username <extranet user> --password <extranet password> sdp.registry.abas.sh
+docker-compose up
+```
+
+Now you can install the project as follows:
+```shell
+./gradlew fullInstall
+```
+## Development
+You can make changes such as manipulating the app's logic or adding/removing components.
+
+First install the app as described in [Installation](##Installation) using:
+```shell
+./gradlew fullInstall
+``` 
+
+To deploy your changes run:
+```shell
+./gradlew syncCode
+```

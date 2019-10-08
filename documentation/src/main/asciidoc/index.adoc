@@ -1,0 +1,19 @@
+:docinfo:
+= Geolocation App
+Documentation
+:nofooter:
+
+This document describes the Geolocation App.
+
+include::introduction.adoc[]
+
+include::installation.adoc[]
+
+include::functionality.adoc[]
+
+== About
+
+Geolocation App +
+(C) abas Software AG
+
+https://abas-essentials-sdk.com/
