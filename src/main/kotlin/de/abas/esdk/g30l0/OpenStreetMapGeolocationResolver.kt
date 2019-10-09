@@ -29,6 +29,7 @@ class OpenStreetMapGeolocationResolver : GeolocationResolver {
 
 	private fun getFormattedAddress(tradingPartner: TradingPartner) = "${tradingPartner.street}, ${tradingPartner.zipCode} ${tradingPartner.town}, ${tradingPartner.stateOfTaxOffice.swd}"
 
+	@Throws(IOException::class)
 	private fun resolveFromOpenStreetMaps(tradingPartner: TradingPartner): List<Address> {
 		val jsonNominatimClient = JsonNominatimClient(DefaultHttpClient(), "scrumteamesdk@abas.de")
 		return jsonNominatimClient.search("${tradingPartner.street} ${tradingPartner.zipCode} ${tradingPartner.town} ${tradingPartner.stateOfTaxOffice.swd}")
