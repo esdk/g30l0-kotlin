@@ -18,8 +18,8 @@ class OpenStreetMapGeolocationResolver : GeolocationResolver {
 			if (addresses.isEmpty()) {
 				logger.debug("No matches found for address ${getFormattedAddress(tradingPartner)}")
 			} else {
-				geolocation.setLatitude(addresses[0].latitude)
-				geolocation.setLongitude(addresses[0].longitude)
+				geolocation.latitude = addresses[0].latitude.toString()
+				geolocation.longitude = addresses[0].longitude.toString()
 			}
 		} catch (e: IOException) {
 			logger.error("Invalid address '${getFormattedAddress(tradingPartner)}': ${e.message}", e)
