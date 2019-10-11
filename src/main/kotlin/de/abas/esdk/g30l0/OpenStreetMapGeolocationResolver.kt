@@ -14,18 +14,18 @@ class OpenStreetMapGeolocationResolver : GeolocationResolver {
         val addresses = try {
             resolveFromOpenStreetMaps(tradingPartner)
         } catch (e: IOException) {
-            logger.error("Invalid address '${getFormattedAddress(tradingPartner)}': ${e.message}", e)
+            logger.error("Invalid address '${tradingPartner.formattedAddress()}': ${e.message}", e)
             return Geolocation()
         }
 
         return addresses.firstOrNull()?.run {
             Geolocation(latitude.toString(), longitude.toString())
         } ?: Geolocation().also {
-            logger.debug("No matches found for address ${getFormattedAddress(tradingPartner)}")
+            logger.debug("No matches found for address ${tradingPartner.formattedAddress()}")
         }
     }
 
-    private fun getFormattedAddress(tradingPartner: TradingPartner) = "${tradingPartner.street}, ${tradingPartner.zipCode} ${tradingPartner.town}, ${tradingPartner.stateOfTaxOffice.swd}"
+    private fun TradingPartner.formattedAddress() = "$street, $zipCode $town, ${stateOfTaxOffice.swd}"
 
     @Throws(IOException::class)
     private fun resolveFromOpenStreetMaps(tradingPartner: TradingPartner): List<Address> {
