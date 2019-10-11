@@ -21,7 +21,7 @@ import java.io.IOException
 @RunWith(PowerMockRunner::class)
 class GeolocationResolverTest {
 
-	private val resolver = PowerMockito.spy(OpenStreetMapGeolocationResolver())
+	private val resolver = PowerMockito.spy(OpenStreetMapGeolocationResolver)
 
 	@Test
 	fun canResolveLocation() {

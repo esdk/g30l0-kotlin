@@ -20,7 +20,7 @@ class GeolocationInfosystem {
                 zipcode = tradingPartner.zipCode
                 town = tradingPartner.town
                 state = tradingPartner.stateOfTaxOffice
-                OpenStreetMapGeolocationResolver().resolve(tradingPartner).let {
+                OpenStreetMapGeolocationResolver.resolve(tradingPartner).let {
                     latitude = it.latitude
                     longitude = it.longitude
                 }

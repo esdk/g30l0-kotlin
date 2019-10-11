@@ -7,7 +7,7 @@ import org.apache.http.impl.client.DefaultHttpClient
 import org.apache.log4j.Logger
 import java.io.IOException
 
-class OpenStreetMapGeolocationResolver : GeolocationResolver {
+object OpenStreetMapGeolocationResolver : GeolocationResolver {
     private val logger: Logger = Logger.getLogger(OpenStreetMapGeolocationResolver::class.java)
 
     override fun resolve(tradingPartner: TradingPartner): Geolocation {
