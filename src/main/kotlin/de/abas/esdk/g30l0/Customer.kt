@@ -11,11 +11,12 @@ import de.abas.erp.jfop.rt.api.annotation.RunFopWith
 @RunFopWith(EventHandlerRunner::class)
 class Customer {
 
-	@ButtonEventHandler(field = "yg30l0calcgeoloc", type = ButtonEventType.AFTER)
-	fun calcGeolocAfter(customerEditor: CustomerEditor) {
-		val geolocation = OpenStreetMapGeolocationResolver().resolve(customerEditor)
-		customerEditor.latitude = geolocation.latitude.toBigDecimal()
-		customerEditor.longitude = geolocation.longitude.toBigDecimal()
-	}
+    @ButtonEventHandler(field = "yg30l0calcgeoloc", type = ButtonEventType.AFTER)
+    fun calcGeolocAfter(customerEditor: CustomerEditor) {
+        OpenStreetMapGeolocationResolver().resolve(customerEditor).let {
+            customerEditor.latitude = it.latitude.toBigDecimal()
+            customerEditor.longitude = it.longitude.toBigDecimal()
+        }
+    }
 
 }

@@ -12,18 +12,20 @@ import de.abas.erp.jfop.rt.api.annotation.RunFopWith
 @RunFopWith(EventHandlerRunner::class)
 class GeolocationInfosystem {
 
-	@ButtonEventHandler(field = "start", type = ButtonEventType.AFTER)
-	fun startAfter(ctx: DbContext, infosystem: GeoLocation) {
-		TradingPartnerSelector().selectTradingPartners(ctx, infosystem.customersel, infosystem.zipcodesel).forEach { tradingPartner ->
-			val row = infosystem.table().appendRow()
-			row.customer = tradingPartner
-			row.zipcode = tradingPartner.zipCode
-			row.town = tradingPartner.town
-			row.state = tradingPartner.stateOfTaxOffice
-			val geolocation = OpenStreetMapGeolocationResolver().resolve(tradingPartner)
-			row.latitude = geolocation.latitude
-			row.longitude = geolocation.longitude
-		}
-	}
+    @ButtonEventHandler(field = "start", type = ButtonEventType.AFTER)
+    fun startAfter(ctx: DbContext, infosystem: GeoLocation) {
+        TradingPartnerSelector().selectTradingPartners(ctx, infosystem.customersel, infosystem.zipcodesel).forEach { tradingPartner ->
+            infosystem.table().appendRow().run {
+                customer = tradingPartner
+                zipcode = tradingPartner.zipCode
+                town = tradingPartner.town
+                state = tradingPartner.stateOfTaxOffice
+                OpenStreetMapGeolocationResolver().resolve(tradingPartner).let {
+                    latitude = it.latitude
+                    longitude = it.longitude
+                }
+            }
+        }
+    }
 
 }
