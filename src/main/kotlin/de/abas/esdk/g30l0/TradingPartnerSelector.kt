@@ -8,22 +8,21 @@ import de.abas.erp.db.schema.vendor.Vendor
 import de.abas.erp.db.schema.vendor.VendorContact
 import de.abas.erp.db.selection.Conditions
 import de.abas.erp.db.selection.SelectionBuilder
+import kotlin.reflect.KClass
 
 class TradingPartnerSelector {
 
-	fun selectTradingPartners(ctx: DbContext, swd: String, zipCode: String): List<TradingPartner> {
-		val tradingPartners = mutableListOf<TradingPartner>()
-		tradingPartners.addAll(selectFromTradingPartner(Customer::class.java, ctx, swd, zipCode))
-		tradingPartners.addAll(selectFromTradingPartner(CustomerContact::class.java, ctx, swd, zipCode))
-		tradingPartners.addAll(selectFromTradingPartner(Vendor::class.java, ctx, swd, zipCode))
-		tradingPartners.addAll(selectFromTradingPartner(VendorContact::class.java, ctx, swd, zipCode))
-		return tradingPartners
-	}
+    fun selectTradingPartners(ctx: DbContext, swd: String, zipCode: String): List<TradingPartner> {
 
-	private fun <T : TradingPartner> selectFromTradingPartner(clazz: Class<T>, ctx: DbContext, swd: String, zipCode: String): List<T> = ctx.createQuery(SelectionBuilder.create(clazz)
-			.add(Conditions.eq(TradingPartner.META.swd, swd))
-			.add(Conditions.eq(TradingPartner.META.zipCode, zipCode))
-			.setTermConjunction(SelectionBuilder.Conjunction.OR).build())
-			.execute()
+        fun <T : TradingPartner> selectFromTradingPartner(clazz: Class<T>): List<T> =
+                ctx.createQuery(SelectionBuilder.create(clazz)
+                        .add(Conditions.eq(TradingPartner.META.swd, swd))
+                        .add(Conditions.eq(TradingPartner.META.zipCode, zipCode))
+                        .setTermConjunction(SelectionBuilder.Conjunction.OR)
+                        .build())
+                        .execute()
 
+        return listOf<KClass<out TradingPartner>>(Customer::class, CustomerContact::class, Vendor::class, VendorContact::class)
+                .flatMap { selectFromTradingPartner(it.java) }
+    }
 }
