@@ -10,7 +10,7 @@ import de.abas.erp.db.selection.Conditions
 import de.abas.erp.db.selection.SelectionBuilder
 import kotlin.reflect.KClass
 
-class TradingPartnerSelector {
+object TradingPartnerSelector {
 
     fun selectTradingPartners(ctx: DbContext, swd: String, zipCode: String): List<TradingPartner> {
 
