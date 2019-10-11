@@ -13,7 +13,7 @@ class Customer {
 
     @ButtonEventHandler(field = "yg30l0calcgeoloc", type = ButtonEventType.AFTER)
     fun calcGeolocAfter(customerEditor: CustomerEditor) {
-        OpenStreetMapGeolocationResolver.resolve(customerEditor).let {
+        customerEditor.geolocation().let {
             customerEditor.latitude = it.latitude.toBigDecimal()
             customerEditor.longitude = it.longitude.toBigDecimal()
         }

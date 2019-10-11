@@ -7,7 +7,7 @@ import org.apache.http.impl.client.DefaultHttpClient
 import org.apache.log4j.Logger
 import java.io.IOException
 
-object OpenStreetMapGeolocationResolver : GeolocationResolver {
+internal object OpenStreetMapGeolocationResolver : GeolocationResolver {
     private val logger: Logger = Logger.getLogger(OpenStreetMapGeolocationResolver::class.java)
 
     override fun resolve(tradingPartner: TradingPartner): Geolocation {
@@ -34,5 +34,6 @@ object OpenStreetMapGeolocationResolver : GeolocationResolver {
             return jsonNominatimClient.search("$street $zipCode $town ${stateOfTaxOffice.swd}")
         }
     }
-
 }
+
+fun TradingPartner.geolocation() = OpenStreetMapGeolocationResolver.resolve(this)
