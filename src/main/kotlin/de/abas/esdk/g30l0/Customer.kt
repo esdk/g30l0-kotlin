@@ -12,10 +12,10 @@ import de.abas.erp.jfop.rt.api.annotation.RunFopWith
 class Customer {
 
 	@ButtonEventHandler(field = "yg30l0calcgeoloc", type = ButtonEventType.AFTER)
-	fun calcGeolocAfter(customerEditor: CustomerEditor) {
-		customerEditor.geolocation().let {
-			customerEditor.latitude = it.latitude.toBigDecimal()
-			customerEditor.longitude = it.longitude.toBigDecimal()
+	fun CustomerEditor.calcGeolocAfter() {
+		this.geolocation().let {
+			this.latitude = it.latitude.toBigDecimal()
+			this.longitude = it.longitude.toBigDecimal()
 		}
 	}
 
