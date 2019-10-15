@@ -15,11 +15,17 @@ object TradingPartnerSelector {
 
 	fun selectTradingPartners(ctx: DbContext, swd: String, zipCode: String): List<TradingPartner> {
 
-		fun <T : TradingPartner> selectFromTradingPartner(clazz: Class<T>): List<T> = ctx.query(clazz) {
-			or(TradingPartner.META.swd eq swd, TradingPartner.META.zipCode eq zipCode)
-		}
+		fun <T : TradingPartner> selectFromTradingPartner(clazz: Class<T>): List<T> =
+			ctx.query(clazz) {
+				or(TradingPartner.META.swd eq swd, TradingPartner.META.zipCode eq zipCode)
+			}
 
-		return listOf<KClass<out TradingPartner>>(Customer::class, CustomerContact::class, Vendor::class, VendorContact::class)
-				.flatMap { selectFromTradingPartner(it.java) }
+		return listOf<KClass<out TradingPartner>>(
+			Customer::class,
+			CustomerContact::class,
+			Vendor::class,
+			VendorContact::class
+		)
+			.flatMap { selectFromTradingPartner(it.java) }
 	}
 }

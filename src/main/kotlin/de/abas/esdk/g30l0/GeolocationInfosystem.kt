@@ -15,19 +15,19 @@ class GeolocationInfosystem {
 	@ButtonEventHandler(field = "start", type = ButtonEventType.AFTER)
 	fun startAfter(ctx: DbContext, infosystem: GeoLocation) {
 		TradingPartnerSelector
-				.selectTradingPartners(ctx, infosystem.customersel, infosystem.zipcodesel)
-				.forEach { tradingPartner ->
-					infosystem.table().appendRow().run {
-						customer = tradingPartner
-						zipcode = tradingPartner.zipCode
-						town = tradingPartner.town
-						state = tradingPartner.stateOfTaxOffice
-						tradingPartner.geolocation().let {
-							latitude = it.latitude
-							longitude = it.longitude
-						}
+			.selectTradingPartners(ctx, infosystem.customersel, infosystem.zipcodesel)
+			.forEach { tradingPartner ->
+				infosystem.table().appendRow().run {
+					customer = tradingPartner
+					zipcode = tradingPartner.zipCode
+					town = tradingPartner.town
+					state = tradingPartner.stateOfTaxOffice
+					tradingPartner.geolocation().let { geolocation ->
+						latitude = geolocation.latitude
+						longitude = geolocation.longitude
 					}
 				}
+			}
 	}
 
 }
