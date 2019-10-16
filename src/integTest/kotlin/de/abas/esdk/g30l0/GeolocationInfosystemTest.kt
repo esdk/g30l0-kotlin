@@ -1,10 +1,7 @@
 package de.abas.esdk.g30l0
 
 import de.abas.erp.db.infosystem.custom.ow1.GeoLocation
-import de.abas.esdk.g30l0.AbstractTest.TestingData.CUSTOMER
-import de.abas.esdk.g30l0.AbstractTest.TestingData.VENDOR
-import de.abas.esdk.g30l0.AbstractTest.TestingData.CUSTOMER_CONTACT
-import de.abas.esdk.g30l0.AbstractTest.TestingData.INVALID
+import de.abas.esdk.g30l0.AbstractTest.TestingData.*
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.notNullValue
 import org.hamcrest.MatcherAssert.assertThat

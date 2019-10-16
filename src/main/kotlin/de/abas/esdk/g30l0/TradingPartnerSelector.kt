@@ -15,14 +15,21 @@ object TradingPartnerSelector {
 	fun selectTradingPartners(ctx: DbContext, swd: String, zipCode: String): List<TradingPartner> {
 
 		fun <T : TradingPartner> selectFromTradingPartner(clazz: Class<T>): List<T> =
-				ctx.createQuery(SelectionBuilder.create(clazz)
-						.add(Conditions.eq(TradingPartner.META.swd, swd))
-						.add(Conditions.eq(TradingPartner.META.zipCode, zipCode))
-						.setTermConjunction(SelectionBuilder.Conjunction.OR)
-						.build())
-						.execute()
+			ctx.createQuery(
+				SelectionBuilder.create(clazz)
+					.add(Conditions.eq(TradingPartner.META.swd, swd))
+					.add(Conditions.eq(TradingPartner.META.zipCode, zipCode))
+					.setTermConjunction(SelectionBuilder.Conjunction.OR)
+					.build()
+			)
+				.execute()
 
-		return listOf<KClass<out TradingPartner>>(Customer::class, CustomerContact::class, Vendor::class, VendorContact::class)
-				.flatMap { selectFromTradingPartner(it.java) }
+		return listOf<KClass<out TradingPartner>>(
+			Customer::class,
+			CustomerContact::class,
+			Vendor::class,
+			VendorContact::class
+		)
+			.flatMap { selectFromTradingPartner(it.java) }
 	}
 }

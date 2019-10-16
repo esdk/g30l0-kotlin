@@ -10,11 +10,7 @@ import de.abas.erp.db.schema.vendor.Vendor
 import de.abas.erp.db.schema.vendor.VendorContact
 import de.abas.erp.db.schema.vendor.VendorContactEditor
 import de.abas.erp.db.schema.vendor.VendorEditor
-import de.abas.esdk.g30l0.AbstractTest.TestingData.CUSTOMER
-import de.abas.esdk.g30l0.AbstractTest.TestingData.CUSTOMER_CONTACT
-import de.abas.esdk.g30l0.AbstractTest.TestingData.INVALID
-import de.abas.esdk.g30l0.AbstractTest.TestingData.VENDOR
-import de.abas.esdk.g30l0.AbstractTest.TestingData.VENDOR_CONTACT
+import de.abas.esdk.g30l0.AbstractTest.TestingData.*
 import de.abas.esdk.test.util.EsdkIntegTest
 import de.abas.esdk.test.util.TestData
 import org.junit.AfterClass
@@ -60,7 +56,12 @@ abstract class AbstractTest : EsdkIntegTest() {
 		}
 	}
 
-	enum class TestingData(val swd: String, val zipCode: String, val town: String, var tradingPartner: TradingPartner? = null) {
+	enum class TestingData(
+		val swd: String,
+		val zipCode: String,
+		val town: String,
+		var tradingPartner: TradingPartner? = null
+	) {
 		CUSTOMER("G30L0CUS", "67165", "Waldsee"),
 		VENDOR("G30L0VEN", "76135", "Karlsruhe"),
 		CUSTOMER_CONTACT("G30L0CCO", "67346", "Speyer"),

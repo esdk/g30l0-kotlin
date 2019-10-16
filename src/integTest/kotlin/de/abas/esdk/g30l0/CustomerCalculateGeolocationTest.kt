@@ -12,7 +12,8 @@ class CustomerCalculateGeolocationTest : AbstractTest() {
 
 	@Test
 	fun canFillGeolocation() {
-		val customer = ctx.load(Customer::class.java, IdImpl.valueOf(TestingData.CUSTOMER.tradingPartner!!.id().toString()))
+		val customer =
+			ctx.load(Customer::class.java, IdImpl.valueOf(TestingData.CUSTOMER.tradingPartner!!.id().toString()))
 		val customerEditor = customer.createEditor()
 		try {
 			customerEditor.open(EditorAction.UPDATE)
