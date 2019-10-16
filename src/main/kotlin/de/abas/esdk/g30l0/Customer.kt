@@ -13,9 +13,9 @@ class Customer {
 
 	@ButtonEventHandler(field = "yg30l0calcgeoloc", type = ButtonEventType.AFTER)
 	fun CustomerEditor.calcGeolocAfter() {
-		this.geolocation().let {
-			this.latitude = it.latitude.toBigDecimal()
-			this.longitude = it.longitude.toBigDecimal()
+		geolocation().let {
+			latitude = it.latitude.toBigDecimal()
+			longitude = it.longitude.toBigDecimal()
 		}
 	}
 
