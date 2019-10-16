@@ -26,17 +26,9 @@ class GeolocationResolverTest {
 	}
 
 	@Test
-	fun returnsNullForLatitudeAndLongitudeIfAddressIsInvalid() {
+	fun returnsNullForLatitudeAndLongitudeIfNoAddressIsFound() {
 		val tradingPartner = getTradingPartner("invalid", "invalid", "does not exist", "UNITED STATES")
 		val geolocation = tradingPartner.geolocation { listOf<Address>() }
-		assertThat(geolocation.latitude, `is`(""))
-		assertThat(geolocation.longitude, `is`(""))
-	}
-
-	@Test
-	fun canHandleIOExceptionDuringGeolocationResolution() {
-		val tradingPartner = getTradingPartner("invalid", "invalid", "does not exist", "UNITED STATES")
-		val geolocation = tradingPartner.geolocation { throw IOException("Simulating IOException") }
 		assertThat(geolocation.latitude, `is`(""))
 		assertThat(geolocation.longitude, `is`(""))
 	}

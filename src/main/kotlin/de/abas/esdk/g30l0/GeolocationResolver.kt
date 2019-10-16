@@ -11,24 +11,23 @@ private val logger: Logger = Logger.getLogger("esdk.g20lO")
 
 typealias TradingPartnerToAddressList = TradingPartner.() -> List<Address>
 
-val openStreetMapGeolocationResolver: TradingPartnerToAddressList =
-	{
-		val jsonNominatimClient = JsonNominatimClient(DefaultHttpClient(), "scrumteamesdk@abas.de")
-		jsonNominatimClient.search("$street $zipCode $town ${stateOfTaxOffice.swd}")
-	}
-
-fun TradingPartner.geolocation(resolve: TradingPartnerToAddressList = openStreetMapGeolocationResolver): Geolocation {
-	val formattedAddress = "$street, $zipCode $town, ${stateOfTaxOffice.swd}"
-	val addresses = try {
-		resolve()
-	} catch (e: IOException) {
-		logger.error("Invalid address '$formattedAddress': ${e.message}", e)
-		return Geolocation()
-	}
+fun TradingPartner.geolocation(resolveAddressList: TradingPartnerToAddressList = openStreetMapGeolocationResolver): Geolocation {
+	val addresses = resolveAddressList()
 	return addresses.firstOrNull()?.run {
 		Geolocation(latitude.toString(), longitude.toString())
 	} ?: Geolocation().also {
-		logger.debug("No matches found for address $formattedAddress")
+		logger.debug("No matches found for address ${formattedAddress()}")
 	}
-
 }
+
+val openStreetMapGeolocationResolver: TradingPartnerToAddressList = {
+	try {
+		JsonNominatimClient(DefaultHttpClient(), "scrumteamesdk@abas.de")
+			.search("$street $zipCode $town ${stateOfTaxOffice.swd}")
+	} catch (e: IOException) {
+		logger.error("Invalid address '${formattedAddress()}': ${e.message}", e)
+		listOf()
+	}
+}
+
+private fun TradingPartner.formattedAddress() = "$street, $zipCode $town, ${stateOfTaxOffice.swd}"
