@@ -11,7 +11,7 @@ import org.junit.Test
 
 class GeolocationInfosystemTest : AbstractTest() {
 
-	val infosystem = ctx.openInfosystem(GeoLocation::class.java)
+	private val infosystem: GeoLocation = ctx.openInfosystem(GeoLocation::class.java)
 
 	@Test
 	fun canDisplayCustomerInfo() {

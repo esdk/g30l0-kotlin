@@ -31,18 +31,16 @@ abstract class AbstractTest : EsdkIntegTest() {
 		}
 
 		private fun <T : TradingPartnerEditor> createTestData(clazz: Class<T>, testingData: TestingData) {
-			val editor = ctx.newObject(clazz)
-			if (editor is CustomerContactEditor) {
-				(editor as CustomerContactEditor).companyARAP = CUSTOMER.tradingPartner as Customer
+			testingData.tradingPartner = ctx.newObject(clazz).apply {
+				when (this) {
+					is CustomerContactEditor -> companyARAP = CUSTOMER.tradingPartner as Customer
+					is VendorContactEditor -> companyARAP = VENDOR.tradingPartner as Vendor
+				}
+				swd = testingData.swd
+				zipCode = testingData.zipCode
+				town = testingData.town
+				commit()
 			}
-			if (editor is VendorContactEditor) {
-				(editor as VendorContactEditor).companyARAP = VENDOR.tradingPartner as Vendor
-			}
-			editor.swd = testingData.swd
-			editor.zipCode = testingData.zipCode
-			editor.town = testingData.town
-			editor.commit()
-			testingData.tradingPartner = editor
 		}
 
 		@JvmStatic
