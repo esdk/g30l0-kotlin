@@ -9,7 +9,6 @@ import org.hamcrest.Matchers.closeTo
 import org.junit.Test
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
-import java.io.IOException
 
 class GeolocationResolverTest {
 
