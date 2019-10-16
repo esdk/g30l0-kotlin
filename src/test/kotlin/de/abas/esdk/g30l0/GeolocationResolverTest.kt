@@ -7,30 +7,20 @@ import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.closeTo
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
-import org.powermock.api.mockito.PowerMockito
-import org.powermock.api.mockito.PowerMockito.doReturn
-import org.powermock.api.mockito.PowerMockito.doThrow
-import org.powermock.core.classloader.annotations.PrepareForTest
-import org.powermock.modules.junit4.PowerMockRunner
 import java.io.IOException
 
-@PrepareForTest(OpenStreetMapGeolocationResolver::class)
-@RunWith(PowerMockRunner::class)
 class GeolocationResolverTest {
-
-	private val resolver = PowerMockito.spy(OpenStreetMapGeolocationResolver)
 
 	@Test
 	fun canResolveLocation() {
 		val tradingPartner = getTradingPartner("Gartenstraße 67", "76135", "Karlsruhe", "DEUTSCHLAND")
-		val address = Address()
-		address.latitude = 49.0049809
-		address.longitude = 8.3839609
-		doReturn(listOf(address)).`when`(resolver, "resolveFromOpenStreetMaps", tradingPartner)
-		val geolocation = resolver.resolve(tradingPartner)
+		val address = Address().apply {
+			latitude = 49.0049809
+			longitude = 8.3839609
+		}
+		val geolocation = tradingPartner.geolocation { listOf(address) }
 		assertThat(geolocation.latitude.toDouble(), `is`(closeTo(49.0049809, 0.001)))
 		assertThat(geolocation.longitude.toDouble(), `is`(closeTo(8.3839609, 0.001)))
 	}
@@ -38,8 +28,7 @@ class GeolocationResolverTest {
 	@Test
 	fun returnsNullForLatitudeAndLongitudeIfAddressIsInvalid() {
 		val tradingPartner = getTradingPartner("invalid", "invalid", "does not exist", "UNITED STATES")
-		doReturn(listOf<Address>()).`when`(resolver, "resolveFromOpenStreetMaps", tradingPartner)
-		val geolocation = resolver.resolve(tradingPartner)
+		val geolocation = tradingPartner.geolocation { listOf<Address>() }
 		assertThat(geolocation.latitude, `is`(""))
 		assertThat(geolocation.longitude, `is`(""))
 	}
@@ -47,8 +36,7 @@ class GeolocationResolverTest {
 	@Test
 	fun canHandleIOExceptionDuringGeolocationResolution() {
 		val tradingPartner = getTradingPartner("invalid", "invalid", "does not exist", "UNITED STATES")
-		doThrow(IOException("Simulating IOException")).`when`(resolver, "resolveFromOpenStreetMaps", tradingPartner)
-		val geolocation = resolver.resolve(tradingPartner)
+		val geolocation = tradingPartner.geolocation { throw IOException("Simulating IOException") }
 		assertThat(geolocation.latitude, `is`(""))
 		assertThat(geolocation.longitude, `is`(""))
 	}
