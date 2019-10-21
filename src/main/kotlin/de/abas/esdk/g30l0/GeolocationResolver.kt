@@ -2,14 +2,16 @@ package de.abas.esdk.g30l0
 
 import de.abas.erp.db.schema.referencetypes.TradingPartner
 import io.ktor.client.HttpClient
+import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.apache.Apache
-import io.ktor.client.features.UserAgent
 import io.ktor.client.features.json.GsonSerializer
 import io.ktor.client.features.json.JsonFeature
+import io.ktor.client.features.logging.DEFAULT
+import io.ktor.client.features.logging.LogLevel
+import io.ktor.client.features.logging.Logging
 import io.ktor.client.request.get
-import org.apache.log4j.Logger
 
-private val logger: Logger = Logger.getLogger("de.abas.esdk.g30l0")
+private val logger: org.apache.log4j.Logger = org.apache.log4j.Logger.getLogger("de.abas.esdk.g30l0")
 
 /**
  * Suspending function type taking street, zipCode, town, and country and returning a [Geolocation].
@@ -37,12 +39,19 @@ suspend fun TradingPartner.geolocation(
  *
  * Only the one result is returned.
  * If location lookup fails a [Geolocation] with empty coordinates is returned.
+ * A default [HttpClient] is provided, but can be replaced (e. g. for tests).
  */
-suspend fun getOpenStreetMapGeolocation(street: String, zipCode: String, town: String, country: String): Geolocation {
+suspend fun getOpenStreetMapGeolocation(
+	street: String,
+	zipCode: String,
+	town: String,
+	country: String,
+	httpClient: HttpClient = defaultHttpClient()
+): Geolocation {
 	val queryString = "$street, $zipCode, $town, $country"
 	val email = "scrumteamesdk@abas.de"
 	logger.debug("Looking up: $queryString")
-	defaultHttpClient().use {
+	httpClient.use {
 		val geolocationList: List<Geolocation> = try {
 			it.get("https://nominatim.openstreetmap.org/search?q=$queryString&email=$email&format=json&limit=1")
 		} catch (e: Exception) {
@@ -56,16 +65,15 @@ suspend fun getOpenStreetMapGeolocation(street: String, zipCode: String, town: S
 	}
 }
 
-private fun defaultHttpClient(): HttpClient {
-	return HttpClient(Apache) {
-		install(JsonFeature) {
-			serializer = GsonSerializer {
-				serializeNulls()
-			}
+fun defaultHttpClient(httpClientEngine: HttpClientEngine = Apache.create()) = HttpClient(httpClientEngine) {
+	install(JsonFeature) {
+		serializer = GsonSerializer {
+			// .GsonBuilder
+			serializeNulls()
 		}
-		// Nominatim requires to set a meaningful User-Agent header.
-		install(UserAgent) {
-			agent = "ESDK Demo App"
-		}
+	}
+	install(Logging) {
+		logger = io.ktor.client.features.logging.Logger.DEFAULT
+		level = LogLevel.INFO
 	}
 }
