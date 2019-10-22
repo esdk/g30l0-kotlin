@@ -10,8 +10,9 @@ import io.ktor.client.features.logging.DEFAULT
 import io.ktor.client.features.logging.LogLevel
 import io.ktor.client.features.logging.Logging
 import io.ktor.client.request.get
+import org.slf4j.LoggerFactory
 
-private val logger: org.apache.log4j.Logger = org.apache.log4j.Logger.getLogger("de.abas.esdk.g30l0")
+val log: org.slf4j.Logger = LoggerFactory.getLogger("de.abas.esdk.g30l0")
 
 /**
  * Suspending function type taking street, zipCode, town, and country and returning a [Geolocation].
@@ -50,17 +51,17 @@ suspend fun getOpenStreetMapGeolocation(
 ): Geolocation {
 	val queryString = "$street, $zipCode, $town, $country"
 	val email = "scrumteamesdk@abas.de"
-	logger.debug("Looking up: $queryString")
+	log.debug("Looking up: $queryString")
 	httpClient.use {
 		val geolocationList: List<Geolocation> = try {
 			it.get("https://nominatim.openstreetmap.org/search?q=$queryString&email=$email&format=json&limit=1")
 		} catch (e: Exception) {
-			logger.error("Error while looking up address: ${e.message}", e)
+			log.error("Error while looking up address: ${e.message}", e)
 			listOf()
 		}
-		logger.debug("Looked up : $queryString -> $geolocationList")
+		log.debug("Looked up : $queryString -> $geolocationList")
 		return geolocationList.firstOrNull() ?: Geolocation().also {
-			logger.debug("No matches found for address $queryString")
+			log.debug("No matches found for address $queryString")
 		}
 	}
 }

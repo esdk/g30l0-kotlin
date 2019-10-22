@@ -54,6 +54,7 @@ class GeolocationResolverTest {
 	@Test
 	fun `when OpenStreetMap returns data, an Geolocation object is returned`() {
 		val geolocation = runBlocking {
+			log.debug("Using mock HTTP client...")
 			getOpenStreetMapGeolocation(
 				"Gartenstraße 67",
 				"76135",
@@ -69,6 +70,7 @@ class GeolocationResolverTest {
 	@Test
 	fun `if no address is found, an empty Geolocation object is returned`() {
 		val geolocation = runBlocking {
+			log.debug("Using mock HTTP client...")
 			getOpenStreetMapGeolocation(
 				"invalid",
 				"invalid",
