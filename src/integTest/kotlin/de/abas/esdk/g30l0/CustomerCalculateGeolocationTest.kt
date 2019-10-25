@@ -12,17 +12,14 @@ class CustomerCalculateGeolocationTest : AbstractTest() {
 
 	@Test
 	fun canFillGeolocation() {
-		val customer = ctx.load(Customer::class.java, IdImpl.valueOf(TestingData.CUSTOMER.tradingPartner!!.id().toString()))
+		val customer =
+			ctx.load(Customer::class.java, IdImpl.valueOf(TestingData.CUSTOMER.tradingPartner!!.id().toString()))
 		val customerEditor = customer.createEditor()
-		try {
+		customerEditor.use {
 			customerEditor.open(EditorAction.UPDATE)
 			customerEditor.invokeButton("yg30l0calcgeoloc")
 			assertThat(customerEditor.latitude.toDouble(), `is`(closeTo(49.3953008, 0.1)))
 			assertThat(customerEditor.longitude.toDouble(), `is`(closeTo(8.440276, 0.1)))
-		} finally {
-			if (customerEditor.active()) {
-				customerEditor.abort()
-			}
 		}
 	}
 
