@@ -1,4 +1,7 @@
 import de.abas.esdk.gradle.EsdkConfig
+import de.abas.esdk.gradle.dsl.app
+import de.abas.esdk.gradle.dsl.infosystems
+import de.abas.esdk.gradle.dsl.screens
 
 buildscript {
 //	val esdkReleaseURL: String by project
@@ -62,6 +65,13 @@ repositories {
 
 val esdk: EsdkConfig = extensions["esdk"] as EsdkConfig
 
+de.abas.esdk.gradle.dsl.esdk {
+	app {
+		infosystems("IS.OW1.G30L0")
+		screens("Customer:Customer" to listOf("A", "D"), "TestDb:TestStructure" to listOf("A"))
+	}
+}
+
 esdk.apply {
 	app.apply {
 		name = "g30l0"
@@ -105,7 +115,6 @@ esdk.apply {
 	}
 	installType = "SSH"
 }
-
 
 group = "de.abas.esdk.g30l0"
 
