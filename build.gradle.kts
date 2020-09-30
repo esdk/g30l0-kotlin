@@ -6,7 +6,6 @@ import de.abas.esdk.gradle.dsl.screens
 plugins {
 	kotlin("jvm") version "1.3.72"
 	id("com.github.kt3k.coveralls") version "2.8.2"
-//	id("de.abas.esdk") version "0.13.3"
 	id("de.abas.esdk") version "0.13.4-SNAPSHOT"
 }
 
@@ -48,16 +47,10 @@ esdk {
 		name = "g30l0"
 		vendorId = "ag"
 		appId = "g30l0"
-		shared = false
 		infosystems("IS.OW1.G30L0")
-		tables = listOf("Kunde")
-		screens()
-		data()
-		enums()
-		namedTypes()
+		tables("Kunde")
 		languages = "DA"
 		essentialsVersions("2017r4n00-2017r4n17")
-//		screens("Customer:Customer" to listOf("A", "D"), "TestDb:TestStructure" to listOf("A"))
 	}
 	abas {
 		homeDir = ABAS_HOMEDIR
@@ -84,52 +77,6 @@ esdk {
 	}
 	installType = "SSH"
 }
-
-//val esdk: EsdkConfig = extensions["esdk"] as EsdkConfig
-//
-//esdk.apply {
-//	app.apply {
-//		name = "g30l0"
-//		vendorId = "ag"
-//		appId = "g30l0"
-//		shared = false
-//		infosystems = listOf("IS.OW1.G30L0")
-//		tables = listOf("Kunde")
-//		screens = mapOf()
-//		data = listOf()
-//		enums = listOf()
-//		namedTypes = listOf()
-//		languages = "DA"
-//		essentialsVersions = listOf("2017r4n00-2017r4n17")
-//	}
-//
-//	abas.apply {
-//		homeDir = ABAS_HOMEDIR
-//		clientDir = ABAS_CLIENTDIR
-//		clientId = ABAS_CLIENTID
-//		edpHost = EDP_HOST
-//		edpPort = EDP_PORT.toInt()
-//		edpUser = EDP_USER
-//		edpPassword = EDP_PASSWORD
-//	}
-//
-//	nexus.apply {
-//		nexusHost = NEXUS_HOST
-//		nexusPort = NEXUS_PORT.toInt()
-//		nexusRepoName = NEXUS_NAME
-//		nexusPassword = NEXUS_PASSWORD
-//		nexusVersion = NEXUS_VERSION
-//	}
-//
-//	ssh.apply {
-//		host = SSH_HOST
-//		port = SSH_PORT.toInt()
-//		user = SSH_USER
-//		password = SSH_PASSWORD
-//		key = SSH_KEY
-//	}
-//	installType = "SSH"
-//}
 
 group = "de.abas.esdk.g30l0"
 
