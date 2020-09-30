@@ -3,32 +3,12 @@ import de.abas.esdk.gradle.dsl.app
 import de.abas.esdk.gradle.dsl.infosystems
 import de.abas.esdk.gradle.dsl.screens
 
-buildscript {
-//	val esdkReleaseURL: String by project
-//	val nexusUser: String by project
-//	val nexusPassword: String by project
-//	repositories {
-//		maven {
-//			url = uri("https://artifactory.abas.sh/artifactory/abas.esdk.releases/")
-//			credentials {
-//				username = nexusUser
-//				password = nexusPassword
-//			}
-//		}
-//	}
-	dependencies {
-//		classpath("de.abas.esdk:gradlePlugin:0.13.2")
-		classpath("de.abas.esdk:gradlePlugin")
-	}
-}
-
 plugins {
-	id("org.jetbrains.kotlin.jvm") version "1.3.72"
-//	id("de.abas.esdk") version "0.13.1"
+	kotlin("jvm") version "1.3.72"
 	id("com.github.kt3k.coveralls") version "2.8.2"
+//	id("de.abas.esdk") version "0.13.3"
+	id("de.abas.esdk") version "0.13.4-SNAPSHOT"
 }
-//apply plugin: "de.abas.esdk"
-apply(plugin = "de.abas.esdk")
 
 val NEXUS_HOST: String by project
 val NEXUS_PORT: String by project
@@ -63,32 +43,23 @@ repositories {
 	maven { url = uri("https://registry.abas.sh/artifactory/abas.maven-public/") }
 }
 
-val esdk: EsdkConfig = extensions["esdk"] as EsdkConfig
-
-de.abas.esdk.gradle.dsl.esdk {
+esdk {
 	app {
-		infosystems("IS.OW1.G30L0")
-		screens("Customer:Customer" to listOf("A", "D"), "TestDb:TestStructure" to listOf("A"))
-	}
-}
-
-esdk.apply {
-	app.apply {
 		name = "g30l0"
 		vendorId = "ag"
 		appId = "g30l0"
 		shared = false
-		infosystems = listOf("IS.OW1.G30L0")
+		infosystems("IS.OW1.G30L0")
 		tables = listOf("Kunde")
-		screens = mapOf()
-		data = listOf()
-		enums = listOf()
-		namedTypes = listOf()
+		screens()
+		data()
+		enums()
+		namedTypes()
 		languages = "DA"
-		essentialsVersions = listOf("2017r4n00-2017r4n17")
+		essentialsVersions("2017r4n00-2017r4n17")
+//		screens("Customer:Customer" to listOf("A", "D"), "TestDb:TestStructure" to listOf("A"))
 	}
-
-	abas.apply {
+	abas {
 		homeDir = ABAS_HOMEDIR
 		clientDir = ABAS_CLIENTDIR
 		clientId = ABAS_CLIENTID
@@ -97,16 +68,14 @@ esdk.apply {
 		edpUser = EDP_USER
 		edpPassword = EDP_PASSWORD
 	}
-
-	nexus.apply {
+	nexus {
 		nexusHost = NEXUS_HOST
 		nexusPort = NEXUS_PORT.toInt()
 		nexusRepoName = NEXUS_NAME
 		nexusPassword = NEXUS_PASSWORD
 		nexusVersion = NEXUS_VERSION
 	}
-
-	ssh.apply {
+	ssh {
 		host = SSH_HOST
 		port = SSH_PORT.toInt()
 		user = SSH_USER
@@ -115,6 +84,52 @@ esdk.apply {
 	}
 	installType = "SSH"
 }
+
+//val esdk: EsdkConfig = extensions["esdk"] as EsdkConfig
+//
+//esdk.apply {
+//	app.apply {
+//		name = "g30l0"
+//		vendorId = "ag"
+//		appId = "g30l0"
+//		shared = false
+//		infosystems = listOf("IS.OW1.G30L0")
+//		tables = listOf("Kunde")
+//		screens = mapOf()
+//		data = listOf()
+//		enums = listOf()
+//		namedTypes = listOf()
+//		languages = "DA"
+//		essentialsVersions = listOf("2017r4n00-2017r4n17")
+//	}
+//
+//	abas.apply {
+//		homeDir = ABAS_HOMEDIR
+//		clientDir = ABAS_CLIENTDIR
+//		clientId = ABAS_CLIENTID
+//		edpHost = EDP_HOST
+//		edpPort = EDP_PORT.toInt()
+//		edpUser = EDP_USER
+//		edpPassword = EDP_PASSWORD
+//	}
+//
+//	nexus.apply {
+//		nexusHost = NEXUS_HOST
+//		nexusPort = NEXUS_PORT.toInt()
+//		nexusRepoName = NEXUS_NAME
+//		nexusPassword = NEXUS_PASSWORD
+//		nexusVersion = NEXUS_VERSION
+//	}
+//
+//	ssh.apply {
+//		host = SSH_HOST
+//		port = SSH_PORT.toInt()
+//		user = SSH_USER
+//		password = SSH_PASSWORD
+//		key = SSH_KEY
+//	}
+//	installType = "SSH"
+//}
 
 group = "de.abas.esdk.g30l0"
 
