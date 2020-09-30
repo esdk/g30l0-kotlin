@@ -8,6 +8,7 @@ services:
 #      image: sdp.registry.abas.sh/abas/test:2017r4n16p27
       build:
         context: .
+        dockerfile: Dockerfile-erp-overrides
       init: true
       container_name: "erp"
 
