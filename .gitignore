@@ -6,6 +6,7 @@ gradle.properties
 build/
 out/
 bin/
+profiles/
 
 # IDE specific files
 .idea/

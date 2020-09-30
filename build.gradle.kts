@@ -1,7 +1,4 @@
-import de.abas.esdk.gradle.EsdkConfig
-import de.abas.esdk.gradle.dsl.app
-import de.abas.esdk.gradle.dsl.infosystems
-import de.abas.esdk.gradle.dsl.screens
+import de.abas.esdk.gradle.dsl.*
 
 plugins {
 	kotlin("jvm") version "1.3.72"
@@ -37,9 +34,19 @@ tasks {
 }
 
 repositories {
-	maven { url = uri("http://$NEXUS_HOST:$NEXUS_PORT/nexus/content/repositories/$NEXUS_NAME-SNAPSHOT") }
-	maven { url = uri("http://$NEXUS_HOST:$NEXUS_PORT/nexus/content/repositories/$NEXUS_NAME") }
-	maven { url = uri("https://registry.abas.sh/artifactory/abas.maven-public/") }
+	mavenLocal()
+	maven {
+		url = uri("http://$NEXUS_HOST:$NEXUS_PORT/nexus/content/repositories/$NEXUS_NAME-SNAPSHOT")
+		isAllowInsecureProtocol = true
+	}
+	maven {
+		url = uri("http://$NEXUS_HOST:$NEXUS_PORT/nexus/content/repositories/$NEXUS_NAME")
+		isAllowInsecureProtocol = true
+	}
+	maven {
+		url = uri("https://artifactory.abas.sh/artifactory/abas.maven-public/")
+		isAllowInsecureProtocol = false
+	}
 }
 
 esdk {
@@ -112,4 +119,5 @@ dependencies {
 	testImplementation("org.powermock:powermock-api-mockito:1.6.2")
 
 	integTestImplementation("de.abas.homedir:abas-db-util:1.0.0")
+	integTestRuntimeOnly("de.abas.homedir:commons-collections:1.0.0")
 }
